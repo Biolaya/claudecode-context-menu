@@ -15,13 +15,17 @@ $sourceHelper = Join-Path $PSScriptRoot 'Open-ClaudeCode.ps1'
 $claudeCmd = Get-Command claude -ErrorAction SilentlyContinue
 if (-not $claudeCmd) {
     Write-Warning "claude.exe was not found in your PATH. The context menu will be installed but will not work until Claude Code is installed and available as 'claude'."
-    if (-not $Force) {
+    if (-not $Force -and -not $WhatIf) {
         $continue = Read-Host "Continue anyway? (y/N)"
         if ($continue -ne 'y' -and $continue -ne 'Y') {
             Write-Host "Installation cancelled."
             exit 0
         }
     }
+}
+
+if (-not (Test-Path -LiteralPath $sourceHelper)) {
+    throw "Open-ClaudeCode.ps1 not found next to this installer. Make sure both scripts are in the same directory."
 }
 
 # Copy helper script
