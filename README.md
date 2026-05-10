@@ -29,16 +29,15 @@ Open PowerShell in this project folder and run:
 powershell.exe -NoProfile -ExecutionPolicy Bypass -File .\install-claudecode-context-menu.ps1
 ```
 
-The installer writes two current-user registry entries:
+The installer copies `Open-ClaudeCode.ps1` to `%LOCALAPPDATA%\ClaudeCodeContextMenu\` and writes two current-user registry entries:
 
 - `HKCU:\Software\Classes\Directory\shell\ClaudeCode`
 - `HKCU:\Software\Classes\Directory\Background\shell\ClaudeCode`
 
-It also installs the launcher helper to:
+**Parameters:**
 
-```text
-%LOCALAPPDATA%\ClaudeCodeContextMenu\Open-ClaudeCode.ps1
-```
+- `-Force` — skip prompts (e.g., when `claude` is not in PATH).
+- `-WhatIf` — preview what would be installed without making changes.
 
 ## Usage
 
@@ -62,6 +61,10 @@ powershell.exe -NoProfile -ExecutionPolicy Bypass -File .\uninstall-claudecode-c
 ```
 
 This removes the `Claude Code` context menu entries and deletes the helper folder under `%LOCALAPPDATA%`.
+
+**Parameters:**
+
+- `-Force` — skip the confirmation prompt.
 
 ## Notes
 

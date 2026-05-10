@@ -29,16 +29,15 @@
 powershell.exe -NoProfile -ExecutionPolicy Bypass -File .\install-claudecode-context-menu.ps1
 ```
 
-安装脚本会写入两个当前用户注册表项：
+安装脚本会把 `Open-ClaudeCode.ps1` 复制到 `%LOCALAPPDATA%\ClaudeCodeContextMenu\`，并写入两个当前用户注册表项：
 
 - `HKCU:\Software\Classes\Directory\shell\ClaudeCode`
 - `HKCU:\Software\Classes\Directory\Background\shell\ClaudeCode`
 
-同时会把启动 helper 安装到：
+**参数：**
 
-```text
-%LOCALAPPDATA%\ClaudeCodeContextMenu\Open-ClaudeCode.ps1
-```
+- `-Force` — 跳过所有提示（例如 claude 未在 PATH 中时）。
+- `-WhatIf` — 预览将要执行的操作，不实际修改系统。
 
 ## 使用方式
 
@@ -62,6 +61,10 @@ powershell.exe -NoProfile -ExecutionPolicy Bypass -File .\uninstall-claudecode-c
 ```
 
 卸载脚本会删除 `Claude Code` 右键菜单项，并移除 `%LOCALAPPDATA%` 下的 helper 目录。
+
+**参数：**
+
+- `-Force` — 跳过确认提示。
 
 ## 注意事项
 
