@@ -14,15 +14,6 @@ param(
 
 $ErrorActionPreference = 'Stop'
 
-function Escape-PowerShellSingleQuotedLiteral {
-    param(
-        [Parameter(Mandatory = $true)]
-        [string] $Value
-    )
-
-    return $Value.Replace("'", "''")
-}
-
 function Quote-CommandLineArgument {
     param(
         [Parameter(Mandatory = $true)]
@@ -86,8 +77,6 @@ try {
     }
 
     $directory = $target.FullName
-    $escapedDirectory = Escape-PowerShellSingleQuotedLiteral -Value $directory
-    $launchCommand = "Set-Location -LiteralPath '$escapedDirectory'; claude"
 
     $wt = Get-Command wt.exe -ErrorAction SilentlyContinue
 
@@ -101,7 +90,7 @@ try {
             '-ExecutionPolicy'
             'Bypass'
             '-Command'
-            $launchCommand
+            'claude'
         )
 
         Start-Process -FilePath $wt.Source -ArgumentList $wtArguments
@@ -114,10 +103,10 @@ try {
         '-ExecutionPolicy'
         'Bypass'
         '-Command'
-        $launchCommand
+        'claude'
     )
 
-    Start-Process -FilePath 'powershell.exe' -ArgumentList $powershellArguments
+    Start-Process -FilePath 'powershell.exe' -WorkingDirectory $directory -ArgumentList $powershellArguments
 } catch {
     Add-Type -AssemblyName PresentationFramework
     [System.Windows.MessageBox]::Show(
