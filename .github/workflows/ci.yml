@@ -1,0 +1,32 @@
+name: CI
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  powershell:
+    runs-on: windows-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Parse PowerShell scripts
+        shell: powershell
+        run: |
+          $files = Get-ChildItem -Recurse -Filter *.ps1
+          foreach ($file in $files) {
+            Write-Host "Parsing $($file.FullName)"
+            $null = [scriptblock]::Create((Get-Content -LiteralPath $file.FullName -Raw -Encoding UTF8))
+          }
+
+      - name: Installer dry run
+        shell: powershell
+        run: |
+          powershell.exe -NoProfile -ExecutionPolicy Bypass -File .\install-claudecode-context-menu.ps1 -Force -WhatIf
+
+      - name: Uninstaller dry run
+        shell: powershell
+        run: |
+          powershell.exe -NoProfile -ExecutionPolicy Bypass -File .\uninstall-claudecode-context-menu.ps1 -Force -WhatIf
